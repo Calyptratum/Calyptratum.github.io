@@ -1,0 +1,221 @@
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Calyptratum</title>
+    <link>http://Calyptratum.github.io/</link>
+    <description>Recent content on Calyptratum</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>This is a customized copyright.</copyright>
+    <lastBuildDate>Fri, 14 Jun 2024 15:53:13 +0800</lastBuildDate>
+    
+        <atom:link href="http://Calyptratum.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    
+        <item>
+        <title>ceshi</title>
+        <link>http://Calyptratum.github.io/thread/</link>
+        <pubDate>Fri, 14 Jun 2024 15:53:13 +0800</pubDate>
+        
+        <guid>http://Calyptratum.github.io/thread/</guid>
+        <description>Calyptratum http://Calyptratum.github.io/thread/ -&lt;h2 id=&#34;线程&#34;&gt;线程&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;引入线程
+&lt;ul&gt;
+&lt;li&gt;进程是资源分配的最小单位&lt;/li&gt;
+&lt;li&gt;线程是调度的最小单位&lt;/li&gt;
+&lt;li&gt;线程共享进程的所有资源&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;为什么要引入线程
+&lt;ul&gt;
+&lt;li&gt;切换进程CPU高速缓存cache内容丢失&lt;/li&gt;
+&lt;li&gt;切换进程TLB失效，开销大&lt;/li&gt;
+&lt;li&gt;进程之间通信，需要打破隔离的壁障
+&lt;ul&gt;
+&lt;li&gt;线程之间通信，开销小&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;进程的创建与销毁比较耗时
+&lt;ul&gt;
+&lt;li&gt;线程的创建与销毁要轻量很多&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;线程的基本操作&#34;&gt;线程的基本操作&lt;/h3&gt;
+&lt;p&gt;pthread库的设计原则&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;	返回值是int，表示调用成功或失败，成功返回0，失败返回错误码，不会设置errno
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;获取线程的标识&#34;&gt;获取线程的标识&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;PTHREAD_SELF(3)                  Linux Programmer&lt;span style=&#34;color:#cd5555&#34;&gt;&amp;#39;s Manual                 PTHREAD_SELF(3)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#cd5555&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#cd5555&#34;&gt;NAME
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#cd5555&#34;&gt;       pthread_self - obtain ID of the calling thread
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#cd5555&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#cd5555&#34;&gt;SYNOPSIS
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#cd5555&#34;&gt;       #include &amp;lt;pthread.h&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#cd5555&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#cd5555&#34;&gt;       pthread_t pthread_self(void);
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#cd5555&#34;&gt;------------------------------------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#cd5555&#34;&gt;       Compile and link with -pthread.  //使用线程的时候，编译命令一定要加 -pthread 或者 -lpthread  选项
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#cd5555&#34;&gt;------------------------------------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#cd5555&#34;&gt;RETURN VALUE
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#cd5555&#34;&gt;       This function always succeeds, returning the calling thread&amp;#39;&lt;/span&gt;s ID.//函数永远成功，返回线程ID
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;创建线程&#34;&gt;创建线程&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;PTHREAD_CREATE(3)                Linux Programmer&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;&amp;#39;&lt;/span&gt;s Manual               PTHREAD_CREATE(3)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;NAME
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       pthread_create - create a new thread
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;SYNOPSIS
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       &lt;span style=&#34;color:#228b22&#34;&gt;#include &amp;lt;pthread.h&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                          void *(*start_routine) (void *), void *arg);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;//thread:创建子线程的线程ID
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;//attr:线程属性，一般填NULL，表示使用默认属性
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;//start_routine :线程的入口函数
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;//arg:入口函数的参数
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       Compile and link with -pthread.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;RETURN VALUE
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       On success, pthread_create() returns 0; on error, it returns an error  number,  and
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       the contents of *thread are undefined.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;//成功返回0，错误返回错误码，不会设置errno
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;终止线程&#34;&gt;终止线程&lt;/h4&gt;
+&lt;p&gt;线程的终止有三种方式&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从start_routine返回&lt;/li&gt;
+&lt;li&gt;使用pthread_exit();&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;PTHREAD_EXIT(3)                  Linux Programmer&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;&amp;#39;&lt;/span&gt;s Manual                 PTHREAD_EXIT(3)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;NAME
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       pthread_exit - terminate calling thread
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;SYNOPSIS
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       &lt;span style=&#34;color:#228b22&#34;&gt;#include &amp;lt;pthread.h&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       void pthread_exit(void *retval);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;使用pthread_cancel();&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;等待线程&#34;&gt;等待线程&lt;/h4&gt;
+&lt;p&gt;pthread_join()&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;PTHREAD_JOIN(3)                            Linux Programmer&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;&amp;#39;&lt;/span&gt;s Manual                         PTHREAD_JOIN(3)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;NAME
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       pthread_join - join with a terminated thread
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;SYNOPSIS
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       &lt;span style=&#34;color:#228b22&#34;&gt;#include &amp;lt;pthread.h&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       int pthread_join(pthread_t thread, void **retval);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       //thread：等待哪个线程的结束
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       //retval:接收子线程的返回值
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       Compile and link with -pthread.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;RETURN VALUE
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       On success, pthread_join() returns 0; on error, it returns an error number.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;死锁&#34;&gt;死锁&lt;/h4&gt;
+&lt;p&gt;以下四个条件同时成立就会导致死锁&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;互斥&lt;/li&gt;
+&lt;li&gt;持有并等待&lt;/li&gt;
+&lt;li&gt;不能抢占&lt;/li&gt;
+&lt;li&gt;循环等待&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;破坏循环等待&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;​		按固定的顺序依次获取锁&lt;/p&gt;
+&lt;p&gt;​		主动释放获取的锁&lt;/p&gt;
+&lt;p&gt;​		使用全局锁确定一个线程同时获取所需要的锁&lt;/p&gt;
+&lt;h4 id=&#34;等待某个条件成立&#34;&gt;等待某个条件成立&lt;/h4&gt;
+&lt;p&gt;条件变量（pthread_cond_t）&lt;/p&gt;
+&lt;p&gt;条件变量只是提供了一个等待唤醒的机制&lt;/p&gt;
+&lt;p&gt;pthread_cond_init&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;PTHREAD_COND(3)                 Library Functions Manual                                    PTHREAD_COND(3)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;NAME
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       pthread_cond_init, pthread_cond_destroy, pthread_cond_signal, pthread_cond_broadcast, pthread_cond_wait, pthread_cond_timedwait - operations on conditions
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;SYNOPSIS
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       &lt;span style=&#34;color:#228b22&#34;&gt;#include &amp;lt;pthread.h&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       pthread_cond_t &lt;span style=&#34;color:#00688b&#34;&gt;cond&lt;/span&gt; = PTHREAD_COND_INITIALIZER;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       int pthread_cond_init(pthread_cond_t *cond, pthread_condattr_t *cond_attr);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       int pthread_cond_signal(pthread_cond_t *cond);//唤醒一个满足该条件的线程（可能唤醒多个）
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       int pthread_cond_broadcast(pthread_cond_t *cond);//唤醒所有满足该条件的线程
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);//无限期等待
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       int pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex, const struct timespec *abstime);//超时时间
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;------------------------------------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       int pthread_cond_destroy(pthread_cond_t *cond);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Question&lt;/strong&gt;：pthread_cond_wait()为什么需要传递互斥锁？&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Answei&lt;/strong&gt;：保护条件变量或者其他共享资源&lt;/p&gt;
+&lt;p&gt;当条件不成立，一直等待&lt;/p&gt;
+&lt;p&gt;int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);&lt;/p&gt;
+&lt;p&gt;当条件不成立，不超过超时时间等待&lt;/p&gt;
+&lt;p&gt;int pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex, const struct timespec *abstime);&lt;/p&gt;
+&lt;p&gt;语义：当wait返回时，条件曾经成立（目前是否成立还需检测）&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;              ^
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;             | |
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;             | |-------多个线程共享
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;等待某个条件成立的操作步骤&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;释放mutex ------------------------- 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                                |                  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                             原子操作
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                                |
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;陷入阻塞状态------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;当返回时，该线程一定再依次获取了mutex
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;当条件成立时，唤醒所有等待的线程&lt;/p&gt;
+&lt;p&gt;int pthread_cond_broadcast(pthread_cond_t *cond);&lt;/p&gt;
+&lt;p&gt;唤醒一个等待该条件的线程（&lt;strong&gt;在实际实现中，为了性能，可能唤醒多个线程&lt;/strong&gt;）&lt;/p&gt;
+&lt;p&gt;int pthread_cond_signal(pthread_cond_t *cond);&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;条件变量
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      [tid1][tid2][tid3][...........][]队列
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;         |     |     |
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;         等待该条件的线程
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h5 id=&#34;生产者消费者模型&#34;&gt;生产者消费者模型&lt;/h5&gt;
+&lt;p&gt;用户：生产请求&lt;/p&gt;
+&lt;p&gt;服务端：回应请求（消费请求）&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;生产者&lt;/span&gt;--------&amp;gt;[       &lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;阻塞队列&lt;/span&gt;      ]-------------&amp;gt;&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;消费者、消费者&lt;/span&gt;&lt;span style=&#34;color:#b452cd&#34;&gt;2.&lt;/span&gt;......
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;生产者&lt;/span&gt;&lt;span style=&#34;color:#b452cd&#34;&gt;2&lt;/span&gt;-----^    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;生产者&lt;/span&gt;&lt;span style=&#34;color:#b452cd&#34;&gt;3&lt;/span&gt;----^
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      ......
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;阻塞队列：当队列满时，如果线程往队列中添加东西，线程陷入阻塞；当队列空时，线程往队列中取东西，&lt;/span&gt;			&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;线程陷入阻塞。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;“生产者”&lt;/span&gt; :&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;生产“商品”，将商品添加阻塞队列&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    		&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;如果队列满了，生产者陷入阻塞，等待队列不满（&lt;/span&gt;Not full&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    		&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;如果队列不满，将商品添加到阻塞队列，队列非空（&lt;/span&gt;Not empty&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;）&lt;/span&gt;,&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;唤醒消费者&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;“消费者”：消费“商品”&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    		&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;如果队列空了，消费者陷入阻塞，等待队列非空（&lt;/span&gt;not empty&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    		&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;如果队列非空，从阻塞队列中获取商品，队列不满（&lt;/span&gt;not full&lt;span style=&#34;color:#a61717;background-color:#e3d2d2&#34;&gt;），唤醒生产者&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;实现生产者消费者模型&lt;/p&gt;
+&lt;p&gt;主线程&amp;mdash;&amp;mdash;&amp;gt;解析请求，并分装成任务&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Questions1&lt;/strong&gt;：应用程序应该包含多少个线程（包括main线程）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Answer&lt;/strong&gt;：取决于CPU的核数以及任务的负载（任务分为I/O密集型任务和计算密集型任务）&lt;/p&gt;
+&lt;p&gt;​					如果时计算密集型任务，一般为1：1,如果是I/O密集型任务，一般为1:N,N&amp;gt;=2)&lt;/p&gt;
+&lt;h5 id=&#34;线程安全&#34;&gt;线程安全&lt;/h5&gt;
+&lt;p&gt;如何知道一个方法是线程安全还是不安全的&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;man手册中ATTRIBUTES中查看value选项。&lt;/li&gt;
+&lt;/ul&gt;
+- http://Calyptratum.github.io/thread/ - This is a customized copyright.</description>
+        </item>
+    
+    
+  </channel>
+</rss> 

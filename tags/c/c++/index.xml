@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C/C&#43;&#43; on Calyptratum</title>
+    <link>http://Calyptratum.github.io/tags/c/c&#43;&#43;/</link>
+    <description>Recent content in C/C&#43;&#43; on Calyptratum</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <copyright>This is a customized copyright.</copyright>
+    <lastBuildDate>Fri, 14 Jun 2024 15:53:13 +0800</lastBuildDate>
+    <atom:link href="http://Calyptratum.github.io/tags/c/c++/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ceshi</title>
+      <link>http://Calyptratum.github.io/thread/</link>
+      <pubDate>Fri, 14 Jun 2024 15:53:13 +0800</pubDate>
+      <guid>http://Calyptratum.github.io/thread/</guid>
+      <description>线程 引入线程 进程是资源分配的最小单位 线程是调度的最小单位 线程共享进程的所有资源 为什么要引入线程 切换进程CPU高速缓存cache内容丢失 切换进程TLB失效，开销大 进程之间通信，需要打破隔离的壁障 线程之间通信，开销小 进程的创建与销毁比较耗时 线程的创建与销毁要轻量很多 线程的基本操作 pthread库的设计原则&#xA;返回值是int，表示调用成功或失败，成功返回0，失败返回错误码，不会设置errno&#xD;获取线程的标识 PTHREAD_SELF(3) Linux Programmer&amp;#39;s Manual PTHREAD_SELF(3) NAME pthread_self - obtain ID of the calling thread SYNOPSIS #include &amp;lt;pthread.h&amp;gt; pthread_t pthread_self(void); ------------------------------------------------------------------------------------------------------------ Compile and link with -pthread. //使用线程的时候，编译命令一定要加 -pthread 或者 -lpthread 选项 ------------------------------------------------------------------------------------------------------------ RETURN VALUE This function always succeeds, returning the calling thread&amp;#39;s ID.//函数永远成功，返回线程ID ------------------------------------------------------------------------------------------------------------ 创建线程 PTHREAD_CREATE(3) Linux Programmer&amp;#39;s Manual PTHREAD_CREATE(3) NAME pthread_create - create a new thread SYNOPSIS #include &amp;lt;pthread.</description>
+    </item>
+  </channel>
+</rss>
